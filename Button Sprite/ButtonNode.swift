@@ -6,6 +6,21 @@
 //  Copyright © 2016 mitchell hudson. All rights reserved.
 //
 
+
+
+/*
+ 
+ Simple button class that supports image states for Normal, Active, and disabled
+ states. The ButtonNode class defines three textures which it displays as the 
+ button enters it's various states. 
+ 
+ Initialize a ButtonNode with the names of images to use as the Normal, Active, 
+ and Disabled states. 
+ 
+ */
+
+
+
 import Foundation
 import SpriteKit
 
@@ -17,30 +32,24 @@ enum ButtonState {
 }
 
 
-class ButtonNode: SKNode {
-    let normalSprite: SKSpriteNode
-    let activeSprite: SKSpriteNode
-    let disabledSprite: SKSpriteNode
+class ButtonNode: SKSpriteNode {
+    let normal: SKTexture
+    let active: SKTexture
+    let disabled: SKTexture
     
     var selectedHandler: () -> Void = { print("No button action set") }
     
-    
-    
     func setButtonState() {
-        normalSprite.hidden = true
-        activeSprite.hidden = true
-        disabledSprite.hidden = true
-        
         switch state {
         case .Normal:
-            normalSprite.hidden = false
+            texture = normal
             userInteractionEnabled = true
             
         case .Active:
-            activeSprite.hidden = false
+            texture = active
             
         case .Disabled:
-            disabledSprite.hidden = false
+            texture = disabled
             userInteractionEnabled = false
             
         }
@@ -51,7 +60,6 @@ class ButtonNode: SKNode {
             setButtonState()
         }
     }
-    
     
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -66,15 +74,11 @@ class ButtonNode: SKNode {
     
     
     init(normalImageNamed: String, activeImageNamed: String, disabledImageNamed: String) {
-        normalSprite = SKSpriteNode(imageNamed: normalImageNamed)
-        activeSprite = SKSpriteNode(imageNamed: activeImageNamed)
-        disabledSprite = SKSpriteNode(imageNamed: disabledImageNamed)
+        normal = SKTexture(imageNamed: normalImageNamed)
+        active = SKTexture(imageNamed: activeImageNamed)
+        disabled = SKTexture(imageNamed: disabledImageNamed)
         
-        super.init()
-        
-        addChild(normalSprite)
-        addChild(activeSprite)
-        addChild(disabledSprite)
+        super.init(texture: normal, color: UIColor.clearColor(), size: normal.size())
         
         userInteractionEnabled = true
         
